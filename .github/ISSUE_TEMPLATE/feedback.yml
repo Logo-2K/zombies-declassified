@@ -1,0 +1,26 @@
+name: Feedback / suggestion
+description: Something that isn't a bug — balance, polish, ideas
+labels: [feedback]
+body:
+  - type: dropdown
+    id: map
+    attributes:
+      label: Map
+      options:
+        - Nacht der Untoten
+        - Verrückt
+        - Shi No Numa
+        - Der Riese
+        - Kino der Toten
+        - '"Five"'
+        - Ascension
+        - Shangri-La
+        - Moon
+        - Call of the Dead
+        - General / not map-specific
+  - type: textarea
+    id: feedback
+    attributes:
+      label: Your feedback
+    validations:
+      required: true
