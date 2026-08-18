@@ -14,8 +14,8 @@ and multiplayer support.
 |-------------------|--------------------|
 | Nacht der Untoten | `█████████▌` 95%   |
 | Verrückt          | `█████████▌` 95%   |
-| Shi No Numa       | `████████░░` 80%   |
-| Der Riese         | `████████░░` 80%   |
+| Shi No Numa       | `█████████░` 90%   |
+| Der Riese         | `█████████░` 90%   |
 | Kino der Toten    | `█████████▌` 95%   |
 | "Five"            | `█░░░░░░░░░` 10%   |
 | Ascension         | `█░░░░░░░░░` 10%   |
