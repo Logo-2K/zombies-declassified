@@ -43,7 +43,7 @@ with all DLC, and the [Plutonium](https://plutonium.pw/) client.
 This repository carries the project's own code and documentation only. It
 contains no game assets, no leaked files, and nothing extracted from them. Don't ask, and don't share the leaked build anywhere.
 
-Bugs and feedback: [issues](../../issues) here, or the CodModding Discord.
+Bugs and feedback: [issues](../../issues) here, or the CodModding Discord https://discord.gg/wWGNqUEg9.
 
 ---
 
