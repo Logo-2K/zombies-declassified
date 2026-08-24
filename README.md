@@ -14,13 +14,13 @@ and multiplayer support.
 |-------------------|--------------------|
 | Nacht der Untoten | `█████████▌` 95%   |
 | Verrückt          | `█████████▌` 95%   |
-| Shi No Numa       | `█████████░` 90%   |
-| Der Riese         | `█████████░` 90%   |
+| Shi No Numa       | `█████████▌` 95%   |
+| Der Riese         | `█████████▌` 95%   |
 | Kino der Toten    | `█████████▌` 95%   |
-| "Five"            | `█░░░░░░░░░` 10%   |
-| Ascension         | `█░░░░░░░░░` 10%   |
-| Shangri-La        | `█░░░░░░░░░` 10%   |
-| Moon              | `█░░░░░░░░░` 10%   |
+| "Five"            | `██████░░░░` 60%   |
+| Ascension         | `██████░░░░` 60%   |
+| Shangri-La        | `████░░░░░░` 40%   |
+| Moon              | `████░░░░░░` 40%   |
 | Call of the Dead  | `████░░░░░░` 40%   |
 
 ## Additional Content:
