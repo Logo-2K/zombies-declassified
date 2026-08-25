@@ -17,8 +17,8 @@ and multiplayer support.
 | Shi No Numa       | `█████████▌` 95%   |
 | Der Riese         | `█████████▌` 95%   |
 | Kino der Toten    | `█████████▌` 95%   |
-| "Five"            | `██████░░░░` 60%   |
-| Ascension         | `██████░░░░` 60%   |
+| "Five"            | `█████████░` 80%   |
+| Ascension         | `█████████░` 80%   |
 | Shangri-La        | `████░░░░░░` 40%   |
 | Moon              | `████░░░░░░` 40%   |
 | Call of the Dead  | `████░░░░░░` 40%   |
