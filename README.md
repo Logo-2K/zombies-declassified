@@ -19,9 +19,9 @@ and multiplayer support.
 | Kino der Toten    | `█████████▌` 95%   |
 | "Five"            | `█████████░` 80%   |
 | Ascension         | `█████████░` 80%   |
-| Shangri-La        | `████░░░░░░` 40%   |
-| Moon              | `████░░░░░░` 40%   |
-| Call of the Dead  | `████░░░░░░` 40%   |
+| Shangri-La        | `█████████░` 80%   |
+| Moon              | `█████████░` 80%   |
+| Call of the Dead  | `█████░░░░░` 50%   |
 
 ## Additional Content:
 
