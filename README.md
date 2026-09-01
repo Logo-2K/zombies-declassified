@@ -29,7 +29,7 @@ Call of the Dead is an original port included as an optional addon. It was not o
 
 ## Release Dates:
 
-**August 31:** the first beta release, with all nine DLC 5 maps. Call of the Dead will likely release afterwards.
+**August 31:** BETA 1 is **out** — all nine DLC 5 maps. Grab it from [Releases](../../releases). Call of the Dead will likely release afterwards.
 **Late September:** the final release, with Solo EE support, Grief, Call of the Dead, and the full project source.
 
 ## Installation Requirements:
