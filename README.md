@@ -23,14 +23,11 @@ and multiplayer support.
 | Moon              | `█████████░` 80%   |
 | Call of the Dead  | `█████░░░░░` 50%   |
 
-## Additional Content:
-
-Call of the Dead is an original port included as an optional addon. It was not originally planned by Treyarch to be included in DLC 5.
-
 ## Release Dates:
 
-**August 31:** BETA 1 is **out** — all nine DLC 5 maps. Grab it from [Releases](../../releases). Call of the Dead will likely release afterwards.
-**Late September:** the final release, with Solo EE support, Grief, Call of the Dead, and the full project source.
+**August 31:** BETA 1 is **out** — all nine DLC 5 maps. Grab it from [Releases](../../releases).
+
+**Late September:** the final release, with full Solo EE support, Grief, Call of the Dead, and the full project source.
 
 ## Installation Requirements:
 
