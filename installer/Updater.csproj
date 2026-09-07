@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Built and dry-run-tested in the main loop 09-01 (see TESTPLAN.md
+    results). Reproducible-build recipe: build.ps1 alongside this file.
+
+    Deliberately NOT trimmed, NOT NativeAOT (see SPEC.md (a) — both trip
+    current, open antivirus false-positive reports on freshly-published
+    exes; PublishTrimmed=false is the one flag flip the dotnet/runtime
+    issue reports say clears it for the plain self-contained case).
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <PublishTrimmed>false</PublishTrimmed>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>ZombiesDeclassified-Updater</AssemblyName>
+    <RootNamespace>ZDUpdater</RootNamespace>
+    <!-- Version is stamped per-release by build.ps1 from the git tag
+         (-p:Version=$tag) — never hand-edited here. -->
+    <Version>0.0.0-dev</Version>
+    <!-- UAC: no blanket admin requirement — the exe runs unelevated by
+         default (the PLUTO_T6 leg never needs it) and only the BO2-side
+         elevated leg triggers a runas relaunch of itself (Elevation.cs).
+         asInvoker is therefore correct at the app manifest level; the
+         runas verb on Process.Start (not this manifest) drives the UAC
+         prompt for the one relaunch that needs it. -->
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- No third-party NuGet packages — "dependency-free" per the brief.
+         System.Text.Json, System.Net.Http, System.Security.Cryptography are
+         in-box everywhere; Microsoft.Win32.Registry is in-box ONLY on the
+         windows-flavoured TFM, which is why TargetFramework is
+         net8.0-windows above (b2p2 verify HIGH #3: plain net8.0 does not
+         compile PathDetection.cs). -->
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+  <assemblyIdentity version="1.0.0.0" name="ZombiesDeclassified.Updater"/>
+  <trustInfo xmlns="urn:schemas-microsoft-com:asm.v2">
+    <security>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <!-- asInvoker: the process starts UNELEVATED. The BO2-side leg
+             gets its elevation from a separate Process.Start(runas)
+             relaunch of this same exe (Elevation.cs), not from a
+             manifest-level requireAdministrator — that would force UAC
+             even for a PLUTO_T6-only verify/uninstall run, which needs
+             no elevation at all. -->
+        <requestedExecutionLevel level="asInvoker" uiAccess="false"/>
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+</assembly>
