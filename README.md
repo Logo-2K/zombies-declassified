@@ -25,8 +25,6 @@ and multiplayer support.
 
 ## Release Dates:
 
-**August 31:** BETA 1 is **out** — all nine DLC 5 maps. Grab it from [Releases](../../releases).
-
 **Late September:** the final release, with full Solo EE support, Grief, Call of the Dead, and the full project source.
 
 ## Installation Requirements:
