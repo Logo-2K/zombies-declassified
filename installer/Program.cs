@@ -9,6 +9,22 @@ public static class Program
 
     public static async Task<int> Main(string[] args)
     {
+        var report = !args.Contains("--elevated-apply");
+        if (report) SupportReport.Start(args);
+        var code = 1;
+        try
+        {
+            code = await MainInner(args);
+            return code;
+        }
+        finally
+        {
+            if (report) SupportReport.Finish(code, code == 0 ? "completed" : "finished with errors");
+        }
+    }
+
+    private static async Task<int> MainInner(string[] args)
+    {
         try
         {
 
