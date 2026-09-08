@@ -66,7 +66,7 @@ public static class Interactive
 
         Console.WriteLine();
         Console.WriteLine(rc == 0
-            ? "Step 3 of 3 - done. Launch Plutonium T6 Zombies and pick a map."
+            ? "Step 3 of 3 - done. Launch Plutonium T6 Zombies, open Mods and pick the mod from the mods list, then pick a map."
             : "Step 3 of 3 - finished WITH ERRORS (see the lines above). Nothing else was changed.");
         return Finish(rc);
     }

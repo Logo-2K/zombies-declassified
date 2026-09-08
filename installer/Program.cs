@@ -357,13 +357,16 @@ public static class Program
             var json = await http.GetStringAsync(versionAsset.BrowserDownloadUrl);
             using var doc = JsonDocument.Parse(json);
             var latestVersion = doc.RootElement.GetProperty("version").GetString();
-            var running = typeof(Program).Assembly.GetName().Version?.ToString() ?? "0.0.0.0";
+            var info = typeof(Program).Assembly
+                .GetCustomAttributes(typeof(System.Reflection.AssemblyInformationalVersionAttribute), false)
+                .OfType<System.Reflection.AssemblyInformationalVersionAttribute>()
+                .FirstOrDefault()?.InformationalVersion;
+            var running = (info ?? typeof(Program).Assembly.GetName().Version?.ToString() ?? "0.0.0.0").Split('+')[0];
             if (latestVersion != null && latestVersion != running)
             {
                 Console.WriteLine(
-                    $"A newer updater ({latestVersion}) is available — this run is using {running}. " +
-                    "Download the latest ZombiesDeclassified-Updater.exe from the releases page for next time. " +
-                    "(v1 does not self-replace mid-run — see SPEC.md (c) Self-update.)");
+                    $"A newer updater ({latestVersion}) is available; this run is {running}. " +
+                    "Download the latest ZombiesDeclassified-Updater.exe from the releases page for next time.");
             }
         }
         catch
