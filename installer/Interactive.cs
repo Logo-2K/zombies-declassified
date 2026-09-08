@@ -4,10 +4,27 @@ public static class Interactive
 {
     public static bool IsInteractiveSession { get; private set; }
 
+    public static bool GameRunning()
+    {
+        foreach (var p in System.Diagnostics.Process.GetProcesses())
+        {
+            var n = p.ProcessName;
+            if (n.StartsWith("plutonium", StringComparison.OrdinalIgnoreCase) || n.Equals("t6zm", StringComparison.OrdinalIgnoreCase))
+                return true;
+        }
+        return false;
+    }
+
     public static async Task<int> RunWizardAsync(HttpClient http)
     {
         IsInteractiveSession = true;
         Banner();
+
+        while (GameRunning())
+        {
+            Console.WriteLine("Plutonium is running. Close the game and the launcher, then press Enter to continue.");
+            Console.ReadLine();
+        }
 
         var state = SafeLoadState();
         var plutoRoot = PathDetection.ResolvePlutoT6();

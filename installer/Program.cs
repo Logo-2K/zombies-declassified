@@ -27,6 +27,12 @@ public static class Program
             using var http = new HttpClient();
             http.Timeout = TimeSpan.FromMinutes(10);
 
+            if (!opts.DryRun && opts.Command is Command.Install or Command.Update or Command.Uninstall && Interactive.GameRunning())
+            {
+                Console.Error.WriteLine("Plutonium is running. Close the game and the launcher, then run this again.");
+                return 3;
+            }
+
             return opts.Command switch
             {
                 Command.Install => await RunInstallOrUpdateAsync(opts, http, isUpdate: false),
