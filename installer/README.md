@@ -26,3 +26,5 @@ Requires the .NET 8 SDK.
 ```
 ZombiesDeclassified-Updater.exe <install|update|verify|uninstall|paths> [--dry-run] [--bo2-path <dir>] [--pluto-path <dir>] [--manifest <path|url>] [--force]
 ```
+
+A file already sitting where one of the pack's files goes is replaced when its hash is one the manifest lists as an earlier release's (`priorSha256`). Any other content is foreign: the plan names it by path, the wizard asks before replacing it, and the command line keeps it unless `--force` is given. Kept and failed rows are recorded as not placed (never as installed), the run exits 4 when rows were kept, and `verify` lists them as `NOTPLACED`. Replaced foreign files are backed up under `backups\foreign` and restored by `uninstall`.

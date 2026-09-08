@@ -15,6 +15,17 @@ public static class Interactive
         return false;
     }
 
+    public static bool AskReplaceForeign(int count)
+    {
+        Console.WriteLine();
+        Console.WriteLine($"  {count} file(s) listed above sit where this release's files go but were not placed by");
+        Console.WriteLine("  this installer. Replacing them is what a normal install does; the originals are kept");
+        Console.WriteLine("  under backups\\foreign and put back by Uninstall.");
+        var yes = Ask("  Replace them? [Y/n] ", defaultYes: true);
+        Console.WriteLine();
+        return yes;
+    }
+
     public static async Task<int> RunWizardAsync(HttpClient http)
     {
         IsInteractiveSession = true;
@@ -48,7 +59,9 @@ public static class Interactive
         var isUpdate = state != null;
         if (isUpdate)
         {
-            Console.WriteLine($"  Installed: {state!.ReleaseTag}");
+            var pending = state!.NotPlaced?.Count ?? 0;
+            Console.WriteLine($"  Installed: {state.ReleaseTag}" +
+                              (pending > 0 ? $" ({pending} file(s) not placed by the last run - choose 1 to finish)" : ""));
             Console.WriteLine();
             Console.WriteLine("  What would you like to do?");
             Console.WriteLine("    1) Update to the latest release (only changed files are downloaded)");
@@ -82,9 +95,13 @@ public static class Interactive
         var rc = await Program.RunInstallOrUpdateAsync(opts, http, isUpdate);
 
         Console.WriteLine();
-        Console.WriteLine(rc == 0
-            ? "Step 3 of 3 - done. Launch Plutonium T6 Zombies, open Mods and pick the mod from the mods list, then pick a map."
-            : "Step 3 of 3 - finished WITH ERRORS (see the lines above). Nothing else was changed.");
+        Console.WriteLine(rc switch
+        {
+            0 => "Step 3 of 3 - done. Launch Plutonium T6 Zombies, open Mods and pick the mod from the mods list, then pick a map.",
+            4 => "Step 3 of 3 - finished, but the files kept above are not this release's. The pack will not work right " +
+                 "until they are replaced: run this installer again and answer Y.",
+            _ => "Step 3 of 3 - finished WITH ERRORS (see the lines above). Nothing else was changed.",
+        });
         return Finish(rc);
     }
 

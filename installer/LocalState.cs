@@ -11,6 +11,8 @@ public sealed class LocalState
 
     [JsonPropertyName("manifest")] public Manifest? Manifest { get; set; }
 
+    [JsonPropertyName("notPlaced")] public List<string>? NotPlaced { get; set; }
+
     private static readonly JsonSerializerOptions JsonOpts = new()
     {
         WriteIndented = true,

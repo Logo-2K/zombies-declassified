@@ -154,18 +154,25 @@ public static class Program
         var toFetch = diff.Where(r => r.Action is RowAction.New or RowAction.Changed).ToList();
         var toRemove = diff.Where(r => r.Action == RowAction.Removed).ToList();
         var driftedForeign = diff.Where(r => r.Action == RowAction.ForeignDrift).ToList();
+        var kept = new List<DiffRow>();
 
-        if (driftedForeign.Count > 0 && !opts.Force)
+        if (driftedForeign.Count > 0)
         {
-            Console.WriteLine(
-                $"{driftedForeign.Count} file(s) on disk do not match our last-known install AND do not " +
-                "match the new release (something else changed them). Skipping those rows — pass --force " +
-                "to back them up under backups\\foreign\\ and overwrite anyway.");
-            toFetch = toFetch.Where(r => !driftedForeign.Contains(r)).ToList();
-        }
-        else if (opts.Force)
-        {
-            toFetch.AddRange(driftedForeign);
+            var replace = opts.Force
+                || (Interactive.IsInteractiveSession && Interactive.AskReplaceForeign(driftedForeign.Count));
+            if (replace)
+            {
+                toFetch.AddRange(driftedForeign);
+            }
+            else
+            {
+                kept.AddRange(driftedForeign);
+                Console.WriteLine(
+                    $"{driftedForeign.Count} file(s) listed above are kept as they are" +
+                    (Interactive.IsInteractiveSession
+                        ? "."
+                        : " (pass --force to back them up under backups\\foreign\\ and replace them)."));
+            }
         }
 
         var runTempDir = Path.Combine(Path.GetTempPath(), "ZDUpdater", Guid.NewGuid().ToString("N"));
@@ -264,25 +271,29 @@ public static class Program
             if (File.Exists(path)) { File.Delete(path); removedCount++; }
         }
 
+        var notPlaced = failed.Select(f => f.entry.Key).Concat(kept.Select(r => r.Entry.Key)).ToHashSet();
         var newState = new LocalState
         {
             ReleaseTag = manifest.ReleaseTag,
             InstalledUtc = DateTime.UtcNow.ToString("o"),
             Bo2InstallDir = bo2Root,
-            Manifest = manifest,
+            Manifest = manifest.Without(notPlaced),
+            NotPlaced = manifest.Files.Where(f => notPlaced.Contains(f.Key)).Select(f => f.RelPath).ToList(),
         };
         newState.Save();
 
         Console.WriteLine();
-        Console.WriteLine($"Placed: {placedOk.Count}  Failed: {failed.Count}  Removed: {removedCount}  " +
+        Console.WriteLine($"Placed: {placedOk.Count}  Failed: {failed.Count}  Kept: {kept.Count}  Removed: {removedCount}  " +
                            $"Unchanged: {diff.Count(r => r.Action == RowAction.Unchanged)}");
         foreach (var (entry, reason) in failed)
             Console.WriteLine($"  FAILED {entry.RelPath}: {reason}");
+        if (kept.Count > 0)
+            Console.WriteLine($"{kept.Count} file(s) were kept as they are; the pack is incomplete until they are replaced.");
         PrintBanner(manifest);
 
         try { Directory.Delete(runTempDir, recursive: true); } catch {  }
 
-        return failed.Count > 0 ? 1 : 0;
+        return failed.Count > 0 ? 1 : kept.Count > 0 ? 4 : 0;
     }
 
     private static int RunPaths(CliOptions opts)
@@ -319,6 +330,9 @@ public static class Program
         };
 
         int match = 0, missing = 0, drifted = 0;
+        var notPlaced = state.NotPlaced ?? new List<string>();
+        foreach (var p in notPlaced)
+            Console.WriteLine($"  NOTPLACED  {p}");
         foreach (var entry in manifest.Files)
         {
             var root = roots.Resolve(entry.Root);
@@ -336,9 +350,9 @@ public static class Program
         }
 
         Console.WriteLine();
-        Console.WriteLine($"Match: {match}  Missing: {missing}  Drifted: {drifted}");
+        Console.WriteLine($"Match: {match}  Missing: {missing}  Drifted: {drifted}  Not placed: {notPlaced.Count}");
         PrintBanner(manifest);
-        return Task.FromResult((missing == 0 && drifted == 0) ? 0 : 1);
+        return Task.FromResult((missing == 0 && drifted == 0 && notPlaced.Count == 0) ? 0 : 1);
     }
 
     internal static async Task<int> RunUninstallAsync(CliOptions opts)
@@ -403,7 +417,17 @@ public static class Program
         var legacy = diff.Count(r => r.Legacy);
         if (legacy > 0)
             Console.WriteLine($"  (of the Removed rows, {legacy} are files an earlier package placed - backed up under backups\\legacy\\)");
+        var foreign = diff.Where(r => r.Action == RowAction.ForeignDrift).ToList();
+        if (foreign.Count > 0)
+        {
+            Console.WriteLine($"  {foreign.Count} file(s) on disk were not placed by this installer and differ from this release" +
+                              " (an earlier Zombies Declassified zip, a server download, or another mod):");
+            foreach (var r in foreign)
+                Console.WriteLine($"    {r.Entry.RelPath}  (on disk {Short(r.OnDiskSha256)}, this release {Short(r.Entry.Sha256)})");
+        }
     }
+
+    private static string Short(string? sha) => string.IsNullOrEmpty(sha) ? "?" : sha[..Math.Min(8, sha.Length)];
 
     private static void PrintBanner(Manifest manifest)
     {

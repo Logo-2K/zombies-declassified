@@ -43,6 +43,8 @@ public sealed class FileEntry
     [JsonPropertyName("elevation")] public string Elevation { get; set; } = "none";
     [JsonPropertyName("channels")] public List<Channel> Channels { get; set; } = new();
 
+    [JsonPropertyName("priorSha256")] public List<string> PriorSha256 { get; set; } = new();
+
     public bool NeedsElevation => Elevation == "bo2-elevated";
 
     public string Key => Root + "|" + RelPath;
@@ -105,6 +107,19 @@ public sealed class Manifest
 
     public IReadOnlyDictionary<string, FileEntry> ByKey() =>
         Files.ToDictionary(f => f.Key, f => f);
+
+    public Manifest Without(ISet<string> keys) => new()
+    {
+        SchemaVersion = SchemaVersion,
+        ReleaseTag = ReleaseTag,
+        ReleaseVersion = ReleaseVersion,
+        GeneratedUtc = GeneratedUtc,
+        LayoutId = LayoutId,
+        ShortHash = ShortHash,
+        Roots = Roots,
+        Files = Files.Where(f => !keys.Contains(f.Key)).ToList(),
+        Retire = Retire,
+    };
 }
 
 public sealed class ManifestException : Exception

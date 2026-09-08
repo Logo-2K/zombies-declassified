@@ -49,6 +49,11 @@ public static class InstallPlanner
 
                 action = RowAction.Changed;
             }
+            else if (entry.PriorSha256.Any(h => h.Equals(onDiskSha, StringComparison.OrdinalIgnoreCase)))
+            {
+
+                action = RowAction.Changed;
+            }
             else
             {
 
