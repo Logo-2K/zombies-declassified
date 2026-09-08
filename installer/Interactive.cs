@@ -88,10 +88,19 @@ public static class Interactive
         return Finish(rc);
     }
 
+    public static string Version()
+    {
+        var info = typeof(Interactive).Assembly
+            .GetCustomAttributes(typeof(System.Reflection.AssemblyInformationalVersionAttribute), false)
+            .OfType<System.Reflection.AssemblyInformationalVersionAttribute>()
+            .FirstOrDefault()?.InformationalVersion;
+        return (info ?? typeof(Interactive).Assembly.GetName().Version?.ToString() ?? "0.0.0").Split('+')[0];
+    }
+
     private static void Banner()
     {
         Console.WriteLine();
-        Console.WriteLine("  Zombies Declassified - installer / updater");
+        Console.WriteLine($"  Zombies Declassified - installer / updater {Version()}");
         Console.WriteLine("  ------------------------------------------");
         Console.WriteLine("  Adds the DLC5 zombies maps to Black Ops II (Plutonium).");
         Console.WriteLine("  Nothing that ships with the game is overwritten or deleted.");
