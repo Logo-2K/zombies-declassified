@@ -19,7 +19,7 @@ Requires the .NET 8 SDK.
 .\build.ps1 -Tag beta2
 ```
 
-The published executable, `updater-version.json` and `SHA256SUMS.txt` land in `publish\`. The hash in `SHA256SUMS.txt` on a release matches the executable attached to that release.
+The published executable, `updater-version.json` and `SHA256SUMS.txt` are in the releases section. The hash in `SHA256SUMS.txt` on a release matches the executable attached to that release.
 
 ## Command line
 
